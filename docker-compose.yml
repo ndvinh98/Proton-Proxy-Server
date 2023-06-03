@@ -1,12 +1,11 @@
 version: '3.5'
 
 services:
-  jpproxy:
-    container_name: jpproxy
-    build: .
-    image: "jpproxy:latest"
+  protonwire:
+    container_name: protonwire
+    image: "ghcr.io/tprasadtp/protonwire:latest"
     init: true
-    restart: unless-stopped
+    restart: always
     environment:
       PROTONVPN_SERVER: ${PROTONVPN_SERVER}
       WIREGUARD_PRIVATE_KEY: ${WIREGUARD_PRIVATE_KEY}
@@ -20,4 +19,19 @@ services:
     volumes:
       - ./entrypoint.sh:/app/entrypoint.sh
     ports:
-      - ${PROXY_PORT}:8080
+      - ${EXPOSE_PROXY_PORT}:1080
+    mem_limit: 200m
+    mem_reservation: 100m
+    cpus: 0.1
+
+  socks5:
+    restart: always
+    container_name: socks5
+    image: serjs/go-socks5-proxy
+    mem_limit: 200m
+    mem_reservation: 100m
+    cpus: 0.1
+    network_mode: service:protonwire
+    environment:
+      ALLOWED_IPS: ${ALLOWED_IPS}
+      PROXY_PORT: "1080"
