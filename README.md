@@ -4,6 +4,7 @@ Deploy ProtonVPN as Free Proxy Server
 
 # How to use
 Rename .env.example -> .env
+
 Fill your account credentials 
 ```
 PROTONVPN_SERVER=your_dns_proton_vpn_here
