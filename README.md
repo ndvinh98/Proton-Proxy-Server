@@ -15,3 +15,6 @@ ALLOWED_IPS=your_private_ip
 Deploy: ```docker-compose up -d```
 
 For testing: ```curl --socks5 localhost:8400 https://ifcfg.co ```
+
+# start go-sock5 proxy standalone
+```docker run -d --restart always --name socks5 -p 8400:9090 -e PROXY_PORT=9090 -e ALLOWED_IPS=my_private_ip serjs/go-socks5-proxy```
