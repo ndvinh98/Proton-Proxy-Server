@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+  jpproxy:
+    container_name: jpproxy
+    build: .
+    image: "jpproxy:latest"
+    init: true
+    restart: unless-stopped
+    environment:
+      PROTONVPN_SERVER: ${PROTONVPN_SERVER}
+      WIREGUARD_PRIVATE_KEY: ${WIREGUARD_PRIVATE_KEY}
+      DEBUG: "1"
+      # KILL_SWITCH: "1"
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      net.ipv4.conf.all.rp_filter: 2
+      net.ipv6.conf.all.disable_ipv6: 1
+    volumes:
+      - ./entrypoint.sh:/app/entrypoint.sh
+    ports:
+      - ${PROXY_PORT}:8080
